@@ -13,14 +13,14 @@
 
 // Hook prctl to bypass HARDENING checks
 int prctl(int option, ...) {
-    printf("[HOOK] prctl() called with option: 0x%x\n", option);
-    
+    //printf("[HOOK] prctl() called with option: 0x%x\n", option);
+
     if (option == PR_SET_DUMPABLE) {
         printf("[HOOK] prctl(): PR_SET_DUMPABLE bypassed\n");
     } else if (option == PR_SET_PTRACER) {
         printf("[HOOK] prctl(): PR_SET_PTRACER bypassed\n");
     }
-    
+
     // Always return success without actually doing anything
     return 0;
 }
@@ -33,10 +33,13 @@ long ptrace(int request, pid_t pid, void *addr, void *data) {
 
 // Hook strcmp to bypass more HARDENING checks
 int strcmp(const char *s1, const char *s2) {
-    printf("[HOOK] strcmp called with args: '%s', '%s'\n", s1, s2);
+    //printf("[HOOK] strcmp called with args: '%s', '%s'\n", s1, s2);
 
     // Make any parent name match "bash". Trick shc into thinking we are in a normal bash shell.
-    if (strstr(s2, "bash")) return 0;
+    if (strstr(s2, "bash")) {
+        printf("[HOOK] strcmp(): Called with bash arg: '%s', '%s'\n", s1, s2);
+        return 0;
+    }
 
     // Call original strcmp, don't mess with other string comparisons.
     int (*original_strcmp)(const char*, const char*);
