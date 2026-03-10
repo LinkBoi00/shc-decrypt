@@ -6,6 +6,7 @@
 #include <stdarg.h>
 #include <stdlib.h>
 #include <stdarg.h>
+#include <time.h>
 
 // Taken from sys/prctl.h to avoid conflicts
 #define PR_SET_DUMPABLE 4
@@ -68,4 +69,13 @@ int system(const char *command) {
 
     // Don't actually execute anything
     return 0;
+}
+
+// Hook time to bypass expiration date checks
+time_t time(time_t *t) {
+    printf("[HOOK] time() called\n");
+    time_t fake = 946684800; // 2000‑01‑01 00:00:00 UTC
+    if (t)
+        *t = fake;
+    return fake;
 }
