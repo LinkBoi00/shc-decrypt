@@ -4,6 +4,15 @@ Extract hidden bash scripts from executables created by [shc (Shell Script Compi
 
 **Tested with shc versions 3.9.8 and 4.0.3**
 
+## Disclaimer
+
+This project is provided for educational, research, and interoperability purposes only.
+It demonstrates how compiled shell scripts can be analyzed and extracted for security
+research, debugging, and learning. The author does not encourage or condone any illegal
+activity, including unauthorized access to systems or data. Users are solely responsible
+for how they use this software and must ensure that their use complies with all applicable
+laws and regulations.
+
 ## How it works
 
 shc encrypts shell scripts into C code, then compiles them into binaries (sh.x files). This tool uses `LD_PRELOAD` to intercept the decryption process at runtime, capturing the plaintext script before execution.
